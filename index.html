@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS 30-Day Intensive Study Planner</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        mono: ['"Inter"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Clean solid scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0d9488;
+        }
+        .checkbox-custom:checked + div {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Top Navigation & Data Sync Bar -->
+    <header class="sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <!-- Brand Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold shadow-sm">
+                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-bold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white leading-none">
+                            IELTS 30-Day Study Planner
+                        </h1>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">4–5 Hours Focused Daily Routine & Progress Tracker</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons (Export, Import, Reset, Theme) -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- Export JSON -->
+                <button onclick="exportProgress()" title="Download progress as a backup file" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium bg-teal-600 hover:bg-teal-700 text-white transition-all shadow-sm">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Export (Backup)</span>
+                </button>
+
+                <!-- Import JSON -->
+                <label title="Upload a previously saved backup file" class="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all">
+                    <i data-lucide="upload" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Import (Sync)</span>
+                    <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importProgress(event)">
+                </label>
+
+                <!-- Useful Resources Button -->
+                <button onclick="openResourcesModal()" title="Useful IELTS Resources & Links" class="p-2 rounded-xl text-slate-600 hover:text-teal-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-teal-400 dark:hover:bg-slate-800 transition-all">
+                    <i data-lucide="book-marked" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                </button>
+
+                <!-- Reset Button -->
+                <button onclick="openResetModal()" title="Reset all progress" class="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-all">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                </button>
+
+                <!-- Dark/Light Theme Toggle -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark/Light Theme" class="p-2 rounded-xl text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition-all">
+                    <i data-lucide="moon" id="themeIcon" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- Hero Summary & Overall Progress Card (Solid Slate-900 & Teal) -->
+        <section class="bg-slate-900 dark:bg-slate-900 rounded-2xl p-5 sm:p-7 text-white shadow-sm border border-slate-800 relative overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
+                <!-- Left TL;DR Text -->
+                <div class="lg:col-span-7 space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-xs font-medium text-teal-400 border border-slate-700">
+                        <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+                        <span>TL;DR: 30-Day Intensive Roadmap</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold leading-snug text-white">
+                        Achieving a great score from scratch in one month is completely doable!
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Commit to a focused, structured <strong>4–5 hours daily</strong> routine. Spend the first two weeks mastering question patterns and strategies, and dedicate the final two weeks to strict timed practice and full-length mock tests.
+                    </p>
+                    <div class="flex flex-wrap gap-2 pt-1 text-xs text-slate-300">
+                        <span class="flex items-center gap-1.5 bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-lg">
+                            <i data-lucide="hard-drive" class="w-3.5 h-3.5 text-teal-400"></i> Auto-saves in Browser
+                        </span>
+                        <span class="flex items-center gap-1.5 bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-lg">
+                            <i data-lucide="file-json" class="w-3.5 h-3.5 text-teal-400"></i> JSON Export/Import Sync
+                        </span>
+                        <span class="flex items-center gap-1.5 bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-lg">
+                            <i data-lucide="book-open" class="w-3.5 h-3.5 text-teal-400"></i> Cambridge 16 – 19
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right Progress Dashboard -->
+                <div class="lg:col-span-5 bg-slate-800/90 border border-slate-700 rounded-2xl p-4 sm:p-5 space-y-4">
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Overall Study Progress</p>
+                            <div class="flex items-baseline gap-2 mt-1">
+                                <span id="overallPercentText" class="text-3xl font-extrabold font-mono text-white">0%</span>
+                                <span id="overallCountText" class="text-xs text-slate-400">(0/112 tasks done)</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span id="completedDaysBadge" class="inline-block px-3 py-1 rounded-xl bg-teal-950 border border-teal-800 text-teal-300 text-xs font-semibold">
+                                0/28 Days Done
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Solid Progress Bar -->
+                    <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden p-0.5">
+                        <div id="overallProgressBar" class="h-full bg-teal-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+
+                    <!-- Mini Week Progress Indicators -->
+                    <div class="grid grid-cols-4 gap-2 pt-1 text-center">
+                        <div class="bg-slate-900 border border-slate-700/70 rounded-xl p-2">
+                            <p class="text-[11px] text-slate-400">Week 1</p>
+                            <p id="w1MiniProg" class="font-bold text-sm font-mono mt-0.5 text-teal-400">0%</p>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-700/70 rounded-xl p-2">
+                            <p class="text-[11px] text-slate-400">Week 2</p>
+                            <p id="w2MiniProg" class="font-bold text-sm font-mono mt-0.5 text-teal-400">0%</p>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-700/70 rounded-xl p-2">
+                            <p class="text-[11px] text-slate-400">Week 3</p>
+                            <p id="w3MiniProg" class="font-bold text-sm font-mono mt-0.5 text-teal-400">0%</p>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-700/70 rounded-xl p-2">
+                            <p class="text-[11px] text-slate-400">Week 4</p>
+                            <p id="w4MiniProg" class="font-bold text-sm font-mono mt-0.5 text-teal-400">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Built-in Exam Stopwatch / Countdown Timer & Daily Routine -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Daily Suggested Time Split Table -->
+            <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2 rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">Suggested Daily Routine (4–5 Hours)</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Divide your study hours around work or daily commitments</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs uppercase">
+                                    <th class="py-2.5 px-3 font-semibold">Time Slot</th>
+                                    <th class="py-2.5 px-3 font-semibold">Module</th>
+                                    <th class="py-2.5 px-3 font-semibold">Core Activity</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200/70 dark:divide-slate-800/70">
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                                    <td class="py-3 px-3 font-semibold whitespace-nowrap text-slate-900 dark:text-slate-200">
+                                        Morning / Commute
+                                    </td>
+                                    <td class="py-3 px-3 whitespace-nowrap">
+                                        <span class="px-2.5 py-0.5 rounded-md bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-xs font-medium">Listening & Speaking</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-slate-600 dark:text-slate-300">
+                                        Listen to BBC Podcasts or a Listening test on earphones; brainstorm Speaking topics mentally.
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                                    <td class="py-3 px-3 font-semibold whitespace-nowrap text-slate-900 dark:text-slate-200">
+                                        Evening / Early Night
+                                    </td>
+                                    <td class="py-3 px-3 whitespace-nowrap">
+                                        <span class="px-2.5 py-0.5 rounded-md bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-xs font-medium">Reading (1.5 Hours)</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-slate-600 dark:text-slate-300">
+                                        Take 1 timed Reading test and conduct a deep Mistake Analysis of every wrong answer.
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                                    <td class="py-3 px-3 font-semibold whitespace-nowrap text-slate-900 dark:text-slate-200">
+                                        Late Night
+                                    </td>
+                                    <td class="py-3 px-3 whitespace-nowrap">
+                                        <span class="px-2.5 py-0.5 rounded-md bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-xs font-medium">Writing & Speaking (1.5 Hours)</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-slate-600 dark:text-slate-300">
+                                        Write 1 Writing task and practice Speaking in front of a mirror or record audio on your phone.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recommended Resources Bar -->
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <span class="font-semibold text-slate-700 dark:text-slate-300">Essential Resources:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">IELTS Liz / IELTS Advantage</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Cambridge 16, 17, 18, 19</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Makkar Speaking PDF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Practice Timer Widget -->
+            <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2 rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
+                                <i data-lucide="timer" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white">Practice Timer (Timed Drills)</h3>
+                                <p id="timerModeLabel" class="text-xs text-slate-500 dark:text-slate-400">Reading Test (60 Minutes)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preset Mode Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-4">
+                        <button onclick="setTimerPreset(60, 'Reading Test (60 Minutes)')" class="timer-preset-btn px-2.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-teal-950 dark:hover:text-teal-300 border border-slate-200 dark:border-slate-700 transition">
+                            Reading (60m)
+                        </button>
+                        <button onclick="setTimerPreset(30, 'Listening Test (30 Minutes)')" class="timer-preset-btn px-2.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-teal-950 dark:hover:text-teal-300 border border-slate-200 dark:border-slate-700 transition">
+                            Listening (30m)
+                        </button>
+                        <button onclick="setTimerPreset(2, 'Speaking Cue Card (2 Minutes)')" class="timer-preset-btn px-2.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-teal-950 dark:hover:text-teal-300 border border-slate-200 dark:border-slate-700 transition">
+                            Speaking (2m)
+                        </button>
+                        <button onclick="setTimerPreset(165, 'Full Mock Test (2 Hours 45 Mins)')" class="timer-preset-btn px-2.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-teal-50 hover:text-teal-700 dark:hover:bg-teal-950 dark:hover:text-teal-300 border border-slate-200 dark:border-slate-700 transition">
+                            Full Mock (2h 45m)
+                        </button>
+                    </div>
+
+                    <!-- Digital Clock Display -->
+                    <div class="bg-slate-900 dark:bg-slate-950 text-white rounded-2xl py-5 px-4 text-center border border-slate-800">
+                        <div id="timerDisplay" class="font-mono text-4xl sm:text-5xl font-extrabold tracking-wider text-teal-400">
+                            60:00
+                        </div>
+                        <p id="timerStatusText" class="text-xs text-slate-400 mt-1.5">Ready — Click Start to begin</p>
+                    </div>
+                </div>
+
+                <!-- Timer Controls -->
+                <div class="flex items-center gap-2.5 mt-4">
+                    <button id="timerStartPauseBtn" onclick="toggleTimer()" class="flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm bg-teal-600 hover:bg-teal-700 text-white shadow-sm flex items-center justify-center gap-2 transition">
+                        <i data-lucide="play" class="w-4 h-4"></i>
+                        <span>Start Timer</span>
+                    </button>
+                    <button onclick="resetTimer()" class="py-2.5 px-4 rounded-xl font-medium text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5 transition">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4-Week Study Plan Navigation Tabs -->
+        <section class="space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="calendar-check-2" class="w-6 h-6 text-teal-600 dark:text-teal-400"></i>
+                        <span>4-Week Intensive Study Plan</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Check off your daily tasks as you complete them and record your scores and mistakes</p>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="flex items-center gap-2 self-start sm:self-auto">
+                    <button onclick="markCurrentWeekComplete()" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition flex items-center gap-1.5">
+                        <i data-lucide="check-check" class="w-3.5 h-3.5 text-teal-600 dark:text-teal-400"></i>
+                        <span>Toggle All Tasks in This Week</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Week Selector Pills -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3" id="weekTabsContainer">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- Selected Week Banner & Strategy Overview -->
+            <div id="weekSummaryBanner" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- 7 Days Grid for Active Week -->
+            <div id="daysGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- Mistake Analysis & Band Score Tracker Log -->
+        <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2 rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
+                        <i data-lucide="notebook-pen" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white">Mistake Analysis & Weakness Journal</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Log recurring mistakes across question types (e.g., True/False/Not Given, Matching Headings, Part 3 MCQs)</p>
+                    </div>
+                </div>
+                <span id="saveIndicator" class="text-xs text-teal-600 dark:text-teal-400 font-medium flex items-center gap-1">
+                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Saved automatically
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                        Reading & Listening Key Mistakes:
+                    </label>
+                    <textarea id="globalNotesRL" oninput="saveGlobalNotes()" rows="4" placeholder="Example: Losing points in Reading Passage 2 Matching Headings & T/F/NG. Root cause: Reading the whole paragraph instead of skimming..." class="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                        Writing & Speaking Vocabulary & Grammar Log:
+                    </label>
+                    <textarea id="globalNotesWS" oninput="saveGlobalNotes()" rows="4" placeholder="Example: Need to use more complex sentences and cohesive devices (Furthermore, Consequently) in Task 2. Practice natural pauses in Speaking..." class="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition"></textarea>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-4 h-4 text-teal-600 dark:text-teal-400"></i>
+                <span>100% Private & Cloud-Free. All progress is stored locally in your browser.</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="exportProgress()" class="hover:text-teal-600 dark:hover:text-teal-400 underline">Download Backup (.json)</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 pointer-events-none flex flex-col gap-2"></div>
+
+    <!-- Custom Reset Confirmation Modal -->
+    <div id="resetModal" class="fixed inset-0 z-50 bg-slate-950/60 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+            <div class="flex items-center gap-3 text-slate-900 dark:text-white">
+                <div class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold">Reset All Study Progress?</h3>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                This will permanently clear all your completed tasks, daily mock scores, and notes. Consider clicking <strong>Export (Backup)</strong> first if you want to save a copy of your data.
+            </p>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 transition">
+                    Cancel
+                </button>
+                <button onclick="confirmResetAll()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-900 hover:bg-slate-800 dark:bg-teal-600 dark:hover:bg-teal-700 text-white shadow-sm transition">
+                    Yes, Reset Everything
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Useful IELTS Resources Modal -->
+    <div id="resourcesModal" onclick="if(event.target === this) closeResourcesModal()" class="fixed inset-0 z-50 bg-slate-950/60 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
+                        <i data-lucide="book-marked" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Useful IELTS Resources & Links</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Curated lessons, official practice tools, and study portals</p>
+                    </div>
+                </div>
+                <button onclick="closeResourcesModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 text-sm">
+                <!-- Strategy & Video Channels -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400 flex items-center gap-1.5">
+                        <i data-lucide="video" class="w-4 h-4"></i> Strategy & Video Guides
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <a href="https://ieltsliz.com/" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">IELTS Liz</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Comprehensive free tips, model essays, and module breakdowns.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                        <a href="https://www.ieltsadvantage.com/" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">IELTS Advantage</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Step-by-step Writing structures, Speaking guides, and Band 7+ strategies.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Official IELTS Portals & Mock Tests -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400 flex items-center gap-1.5">
+                        <i data-lucide="award" class="w-4 h-4"></i> Official Practice & Band Descriptors
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <a href="https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">British Council Practice Tests</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Official free practice tests for Listening, Reading, Writing, and Speaking.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                        <a href="https://ielts.idp.com/prepare" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">IDP IELTS Prepare Hub</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Official webinars, computer-delivered test familiarization, and sample questions.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                        <a href="https://www.cambridgeenglish.org/exams-and-tests/ielts/preparation/" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">Cambridge English IELTS</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Official Cambridge preparation materials and sample test downloads.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                        <a href="https://ielts.org/organisations/ielts-for-organisations/ielts-scoring-in-detail" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">Official Band Descriptors</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Public marking criteria for Writing Task 1, Task 2, and Speaking.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Listening, Reading & Writing Tools -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400 flex items-center gap-1.5">
+                        <i data-lucide="headphones" class="w-4 h-4"></i> Listening Podcasts & Writing Evaluation Tools
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <a href="https://www.bbc.co.uk/learningenglish/english/features/6-minute-english" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">BBC 6 Minute English</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Ideal daily commute podcast with transcripts and topic vocabulary.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                        <a href="https://writeandimprove.com/" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">Cambridge Write & Improve</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Free automated essay feedback tool developed by Cambridge.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                        <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">ChatGPT (Writing Feedback)</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Paste your daily Task 1/Task 2 essays to check grammar and coherence.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                        <a href="https://dictionary.cambridge.org/" target="_blank" rel="noopener noreferrer" class="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-500 bg-slate-50 dark:bg-slate-950/60 transition flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">Cambridge Dictionary</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Check UK/US pronunciation, collocations, and CEFR word levels.</p>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 shrink-0 mt-0.5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end">
+                <button onclick="closeResourcesModal()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white transition">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // ==========================================
+        // 1. 4-WEEK STUDY PLAN DATASET (28 DAYS)
+        // ==========================================
+        const studyPlanData = [
+            {
+                week: 1,
+                title: "Week 1: Pattern Recognition & Foundation",
+                subtitle: "Understand Question Formats & Deep Mistake Analysis",
+                target: "Build a clear understanding of all 4 IELTS modules (Listening, Reading, Writing, Speaking) and their question types.",
+                actionPlan: "Watch 'IELTS Liz' or 'IELTS Advantage' playlists on YouTube. Complete 1 Reading and 1 Listening test daily from Cambridge 16 (untimed) and perform thorough Mistake Analysis.",
+                book: "Cambridge IELTS 16",
+                days: [
+                    {
+                        day: 1,
+                        title: "Day 1: Exam Overview & Listening Formats",
+                        focus: "Cambridge 16 Test 1 (Listening)",
+                        tasks: [
+                            { id: "w1d1t1", module: "Strategy", text: "Watch IELTS Liz / IELTS Advantage overview videos on the 4 modules & Listening question types." },
+                            { id: "w1d1t2", module: "Listening", text: "Complete Cambridge 16 - Test 1 Listening (untimed, focus on accuracy)." },
+                            { id: "w1d1t3", module: "Analysis", text: "Mistake Analysis: Listen to the audio with the transcript and identify why each wrong answer occurred." },
+                            { id: "w1d1t4", module: "Speaking", text: "Familiarize yourself with Speaking Part 1 common topics (Work, Study, Hometown, Home)." }
+                        ]
+                    },
+                    {
+                        day: 2,
+                        title: "Day 2: Reading Question Formats",
+                        focus: "Cambridge 16 Test 1 (Reading)",
+                        tasks: [
+                            { id: "w1d2t1", module: "Strategy", text: "Watch tutorials on Skimming, Scanning, and True / False / Not Given strategies." },
+                            { id: "w1d2t2", module: "Reading", text: "Complete Cambridge 16 - Test 1 Reading (untimed; focus on locating exact evidence)." },
+                            { id: "w1d2t3", module: "Analysis", text: "Analyze every wrong answer in Reading and note down 10–15 key vocabulary synonyms." },
+                            { id: "w1d2t4", module: "Listening", text: "Listen to 1 episode of BBC 6 Minute English and shadow-repeat key phrases." }
+                        ]
+                    },
+                    {
+                        day: 3,
+                        title: "Day 3: Writing Task 1 & 2 Introduction",
+                        focus: "Cambridge 16 Test 2 (L & R)",
+                        tasks: [
+                            { id: "w1d3t1", module: "Strategy", text: "Watch overview videos on Writing Task 1 (Academic/GT) and Task 2 Essay band descriptors." },
+                            { id: "w1d3t2", module: "Listening", text: "Complete Cambridge 16 - Test 2 Listening + transcript review." },
+                            { id: "w1d3t3", module: "Reading", text: "Complete Cambridge 16 - Test 2 Reading (untimed) + deep Mistake Analysis." },
+                            { id: "w1d3t4", module: "Speaking", text: "Practice answering 5 Part 1 questions aloud in front of a mirror." }
+                        ]
+                    },
+                    {
+                        day: 4,
+                        title: "Day 4: Mastering Matching & MCQs",
+                        focus: "Cambridge 16 Test 3 (L & R)",
+                        tasks: [
+                            { id: "w1d4t1", module: "Strategy", text: "Watch strategy lessons on Reading 'Matching Headings' and Listening 'Multiple Choice Questions'." },
+                            { id: "w1d4t2", module: "Listening", text: "Complete Cambridge 16 - Test 3 Listening + analyze distractor traps." },
+                            { id: "w1d4t3", module: "Reading", text: "Complete Cambridge 16 - Test 3 Reading (untimed) + log synonym pairs." },
+                            { id: "w1d4t4", module: "Writing", text: "Read 2 Band 8+ sample essays on IELTS Liz/Advantage and analyze paragraph structure." }
+                        ]
+                    },
+                    {
+                        day: 5,
+                        title: "Day 5: Speaking Format & Cue Card Intro",
+                        focus: "Cambridge 16 Test 4 (L & R)",
+                        tasks: [
+                            { id: "w1d5t1", module: "Strategy", text: "Learn how Speaking Part 2 (1-min prep + 2-min talk) and Part 3 follow-up work." },
+                            { id: "w1d5t2", module: "Listening", text: "Complete Cambridge 16 - Test 4 Listening + check spelling of all answers." },
+                            { id: "w1d5t3", module: "Reading", text: "Complete Cambridge 16 - Test 4 Reading (untimed) + full Mistake Analysis." },
+                            { id: "w1d5t4", module: "Speaking", text: "Pick 2 easy Cue Cards and practice brainstorming bullet points in 1 minute." }
+                        ]
+                    },
+                    {
+                        day: 6,
+                        title: "Day 6: Deep Dive into Weak Question Types",
+                        focus: "Cambridge 16 Error Review",
+                        tasks: [
+                            { id: "w1d6t1", module: "Analysis", text: "Review all mistakes made in Cambridge 16 Tests 1–4 (Listening & Reading)." },
+                            { id: "w1d6t2", module: "Reading", text: "Re-do the 2 lowest-scoring Reading passages from Cambridge 16." },
+                            { id: "w1d6t3", module: "Writing", text: "Learn the 5 main Writing Task 2 essay types (Opinion, Discussion, Problem/Solution, etc.)." },
+                            { id: "w1d6t4", module: "Speaking", text: "Record yourself speaking for 2 minutes on a familiar topic and listen back." }
+                        ]
+                    },
+                    {
+                        day: 7,
+                        title: "Day 7: Week 1 Consolidation & Vocabulary",
+                        focus: "Foundation Review",
+                        tasks: [
+                            { id: "w1d7t1", module: "Analysis", text: "Revise all synonym lists and common spelling errors collected during Week 1." },
+                            { id: "w1d7t2", module: "Listening", text: "Re-listen to Part 3 & Part 4 of your weakest Cambridge 16 Listening test at 1.25x speed." },
+                            { id: "w1d7t3", module: "Writing", text: "Practice writing 3 Essay Introductions (Paraphrase prompt + Thesis statement)." },
+                            { id: "w1d7t4", module: "Speaking", text: "Brainstorm ideas for 3 Speaking Part 1 topics during your commute/walk." }
+                        ]
+                    }
+                ]
+            },
+            {
+                week: 2,
+                title: "Week 2: Strategy Application & Time Management",
+                subtitle: "Strict Timed Practice, Task 1 Structures & Makkar Cue Cards",
+                target: "Build speed and accuracy under strict time limits: 60 minutes for Reading and 30 minutes for Listening.",
+                actionPlan: "Start Cambridge 17 under timed conditions. Learn Writing Task 1 structures (Line, Bar, Pie, Table, Map, Process) and read 5 Cue Cards daily from the Makkar Speaking PDF while recording 2-minute audio responses.",
+                book: "Cambridge IELTS 17 + Makkar PDF",
+                days: [
+                    {
+                        day: 8,
+                        title: "Day 8: First Timed Practice & Line Graphs",
+                        focus: "Cambridge 17 Test 1 + 5 Cue Cards",
+                        tasks: [
+                            { id: "w2d8t1", module: "Listening", text: "Complete Cambridge 17 - Test 1 Listening strictly in 30 minutes + analyze errors." },
+                            { id: "w2d8t2", module: "Reading", text: "Complete Cambridge 17 - Test 1 Reading strictly in 60 minutes (20m per passage) + analyze." },
+                            { id: "w2d8t3", module: "Writing", text: "Learn Writing Task 1 Line Graph structure (Introduction, Overview, Key Trends) & write 1 report." },
+                            { id: "w2d8t4", module: "Speaking", text: "Read Cue Cards #1–5 from Makkar PDF; record a 2-minute voice note on 1 topic." }
+                        ]
+                    },
+                    {
+                        day: 9,
+                        title: "Day 9: Timed Drills & Bar Charts",
+                        focus: "Cambridge 17 Test 2 + 5 Cue Cards",
+                        tasks: [
+                            { id: "w2d9t1", module: "Listening", text: "Complete Cambridge 17 - Test 2 Listening (timed 30m) + review audio script." },
+                            { id: "w2d9t2", module: "Reading", text: "Complete Cambridge 17 - Test 2 Reading (timed 60m) + Mistake Analysis." },
+                            { id: "w2d9t3", module: "Writing", text: "Learn Writing Task 1 Bar Chart comparison structures & write 1 full Task 1 report." },
+                            { id: "w2d9t4", module: "Speaking", text: "Read Cue Cards #6–10 from Makkar PDF; record a uninterrupted 2-minute talk." }
+                        ]
+                    },
+                    {
+                        day: 10,
+                        title: "Day 10: Pie Charts, Tables & Pacing",
+                        focus: "Cambridge 17 Test 3 + 5 Cue Cards",
+                        tasks: [
+                            { id: "w2d10t1", module: "Listening", text: "Complete Cambridge 17 - Test 3 Listening (timed 30m) + check Part 3 MCQs." },
+                            { id: "w2d10t2", module: "Reading", text: "Complete Cambridge 17 - Test 3 Reading (timed 60m) + Mistake Analysis." },
+                            { id: "w2d10t3", module: "Writing", text: "Study Task 1 Pie Charts & Tables vocabulary (proportions, percentages) & write 1 report." },
+                            { id: "w2d10t4", module: "Speaking", text: "Read Cue Cards #11–15 from Makkar PDF; record 2-minute audio & check for pauses." }
+                        ]
+                    },
+                    {
+                        day: 11,
+                        title: "Day 11: Maps & Process Diagrams",
+                        focus: "Cambridge 17 Test 4 + 5 Cue Cards",
+                        tasks: [
+                            { id: "w2d11t1", module: "Listening", text: "Complete Cambridge 17 - Test 4 Listening (timed 30m) + error analysis." },
+                            { id: "w2d11t2", module: "Reading", text: "Complete Cambridge 17 - Test 4 Reading (timed 60m) + Mistake Analysis." },
+                            { id: "w2d11t3", module: "Writing", text: "Learn Task 1 Map directional vocabulary & Process passive voice structures; write 1 report." },
+                            { id: "w2d11t4", module: "Speaking", text: "Read Cue Cards #16–20 from Makkar PDF; record 2-minute audio on your phone." }
+                        ]
+                    },
+                    {
+                        day: 12,
+                        title: "Day 12: Reading Speed & Task 1 Review",
+                        focus: "Timed Passage Drills + 5 Cue Cards",
+                        tasks: [
+                            { id: "w2d12t1", module: "Reading", text: "Complete 1 full timed Reading test (60m) focusing on spending max 15m on Passage 1." },
+                            { id: "w2d12t2", module: "Listening", text: "Complete 1 timed Listening test + practice predicting answers during pause time." },
+                            { id: "w2d12t3", module: "Writing", text: "Write 1 Task 1 combination chart (e.g., Line + Bar) in strictly 20 minutes." },
+                            { id: "w2d12t4", module: "Speaking", text: "Read Cue Cards #21–25 from Makkar PDF; record 2-minute audio response." }
+                        ]
+                    },
+                    {
+                        day: 13,
+                        title: "Day 13: Task 1 Feedback & Fluency",
+                        focus: "Cambridge 17 Mistake Review + 5 Cue Cards",
+                        tasks: [
+                            { id: "w2d13t1", module: "Analysis", text: "Review all wrong answers across Cambridge 17 Tests 1–4 and categorize by question type." },
+                            { id: "w2d13t2", module: "Writing", text: "Check all Week 2 Task 1 reports using ChatGPT/Grammarly to fix grammar and overview clarity." },
+                            { id: "w2d13t3", module: "Reading", text: "Practice 2 difficult Reading Passages (Passage 3) in 40 minutes total." },
+                            { id: "w2d13t4", module: "Speaking", text: "Read Cue Cards #26–30 from Makkar PDF; record 2-minute audio response." }
+                        ]
+                    },
+                    {
+                        day: 14,
+                        title: "Day 14: Mid-Month Assessment",
+                        focus: "Week 2 Review + 5 Cue Cards",
+                        tasks: [
+                            { id: "w2d14t1", module: "Listening", text: "Take 1 full timed Listening test and aim for 32+ correct answers." },
+                            { id: "w2d14t2", module: "Writing", text: "Revise key Task 1 vocabulary for trends (surge, plummet, fluctuate, remain steady)." },
+                            { id: "w2d14t3", module: "Speaking", text: "Read Cue Cards #31–35 from Makkar PDF; test yourself randomly on 3 cards from Week 2." },
+                            { id: "w2d14t4", module: "Analysis", text: "Update your Mistake Analysis Journal with your top 3 recurring challenges." }
+                        ]
+                    }
+                ]
+            },
+            {
+                week: 3,
+                title: "Week 3: Writing Task 2 Focus & Intensive Practice",
+                subtitle: "Essay Structures, Grammar Checking & Overcoming Speaking Hesitation",
+                target: "Refine vocabulary and paragraph structure for a high Writing band and eliminate hesitation in Speaking.",
+                actionPlan: "Focus heavily on Writing Task 2 (Introduction, Body Paragraphs, Conclusion). Solve Cambridge 18 daily. Write at least 1 full Essay every day and check mistakes using ChatGPT or Grammarly.",
+                book: "Cambridge IELTS 18 + AI Grammar Tools",
+                days: [
+                    {
+                        day: 15,
+                        title: "Day 15: Opinion Essays (Agree / Disagree)",
+                        focus: "Cambridge 18 Test 1 + Task 2 Essay",
+                        tasks: [
+                            { id: "w3d15t1", module: "Strategy", text: "Master Task 2 structure: Introduction (Paraphrase + Thesis), 2 Body Paragraphs (PEEL), Conclusion." },
+                            { id: "w3d15t2", module: "Listening", text: "Complete Cambridge 18 - Test 1 Listening (timed 30m) + Mistake Analysis." },
+                            { id: "w3d15t3", module: "Reading", text: "Complete Cambridge 18 - Test 1 Reading (timed 60m) + Mistake Analysis." },
+                            { id: "w3d15t4", module: "Writing", text: "Write 1 Opinion Essay (40 mins) from Cam 18 Test 1 & review with ChatGPT/Grammarly." }
+                        ]
+                    },
+                    {
+                        day: 16,
+                        title: "Day 16: Discussion Essays (Both Views)",
+                        focus: "Cambridge 18 Test 2 + Task 2 Essay",
+                        tasks: [
+                            { id: "w3d16t1", module: "Listening", text: "Complete Cambridge 18 - Test 2 Listening (timed 30m) + error analysis." },
+                            { id: "w3d16t2", module: "Reading", text: "Complete Cambridge 18 - Test 2 Reading (timed 60m) + error analysis." },
+                            { id: "w3d16t3", module: "Writing", text: "Write 1 Discussion Essay (Discuss both views & give opinion) + evaluate with ChatGPT." },
+                            { id: "w3d16t4", module: "Speaking", text: "Practice full Speaking Part 2 & Part 3 discussion in front of a mirror for 15 minutes." }
+                        ]
+                    },
+                    {
+                        day: 17,
+                        title: "Day 17: Advantages & Disadvantages Essays",
+                        focus: "Cambridge 18 Test 3 + Task 2 Essay",
+                        tasks: [
+                            { id: "w3d17t1", module: "Listening", text: "Complete Cambridge 18 - Test 3 Listening (timed 30m) + review transcript." },
+                            { id: "w3d17t2", module: "Reading", text: "Complete Cambridge 18 - Test 3 Reading (timed 60m) + review wrong answers." },
+                            { id: "w3d17t3", module: "Writing", text: "Write 1 Advantages Outweigh Disadvantages Essay (40m) + check grammar & cohesion." },
+                            { id: "w3d17t4", module: "Speaking", text: "Practice 5 new Makkar Cue Cards and answer 4 follow-up Part 3 questions aloud." }
+                        ]
+                    },
+                    {
+                        day: 18,
+                        title: "Day 18: Problem & Solution Essays",
+                        focus: "Cambridge 18 Test 4 + Task 2 Essay",
+                        tasks: [
+                            { id: "w3d18t1", module: "Listening", text: "Complete Cambridge 18 - Test 4 Listening (timed 30m) + Mistake Analysis." },
+                            { id: "w3d18t2", module: "Reading", text: "Complete Cambridge 18 - Test 4 Reading (timed 60m) + Mistake Analysis." },
+                            { id: "w3d18t3", module: "Writing", text: "Write 1 Problem & Solution Essay (40m) + rewrite weak sentences using ChatGPT feedback." },
+                            { id: "w3d18t4", module: "Speaking", text: "Record a full 11–14 minute self-mock Speaking test (Parts 1, 2, and 3)." }
+                        ]
+                    },
+                    {
+                        day: 19,
+                        title: "Day 19: Direct / Two-Part Question Essays",
+                        focus: "Timed Reading/Listening + Task 2 Essay",
+                        tasks: [
+                            { id: "w3d19t1", module: "Reading", text: "Complete 1 timed Reading test (60m) focusing on Matching Information & Summary Completion." },
+                            { id: "w3d19t2", module: "Listening", text: "Complete 1 timed Listening test focusing on Part 4 one-word gap fills." },
+                            { id: "w3d19t3", module: "Writing", text: "Write 1 Two-Part Question Essay (40m) + check lexical resource and linking words." },
+                            { id: "w3d19t4", module: "Speaking", text: "Practice speaking without 'um/uh' fillers on 3 complex Part 3 topics." }
+                        ]
+                    },
+                    {
+                        day: 20,
+                        title: "Day 20: Combined Writing (Task 1 + Task 2)",
+                        focus: "60-Minute Full Writing Drill",
+                        tasks: [
+                            { id: "w3d20t1", module: "Writing", text: "Complete both Task 1 (20m) and Task 2 (40m) back-to-back in 60 minutes." },
+                            { id: "w3d20t2", module: "Analysis", text: "Analyze both essays with ChatGPT/Grammarly against official IELTS Band Descriptors." },
+                            { id: "w3d20t3", module: "Reading", text: "Complete 1 timed Reading test (60m) + deep Mistake Analysis." },
+                            { id: "w3d20t4", module: "Speaking", text: "Review 10 Makkar Cue Cards and practice natural linking expressions." }
+                        ]
+                    },
+                    {
+                        day: 21,
+                        title: "Day 21: Week 3 Essay & Vocabulary Review",
+                        focus: "Writing & Speaking Polish",
+                        tasks: [
+                            { id: "w3d21t1", module: "Writing", text: "Review all 6 essays written this week and list your most common grammar mistakes." },
+                            { id: "w3d21t2", module: "Writing", text: "Memorize topic-specific vocabulary for Education, Environment, Technology, and Health." },
+                            { id: "w3d21t3", module: "Listening", text: "Re-do the hardest Listening section from Cambridge 18." },
+                            { id: "w3d21t4", module: "Speaking", text: "Do a 15-minute mirror speaking session focusing on pronunciation and intonation." }
+                        ]
+                    }
+                ]
+            },
+            {
+                week: 4,
+                title: "Week 4: Full Mock Tests & Final Revision",
+                subtitle: "2 Hours 45 Minutes Full Exam Simulation & Mistake Review",
+                target: "Adapt your stamina and mindset to real exam-hall conditions.",
+                actionPlan: "No need to learn new strategies this week. Use Cambridge 19 to take uninterrupted 2-hour 45-minute Full Mock Tests (Listening, Reading, Writing together) and revise your most frequent mistakes from Weeks 1–3.",
+                book: "Cambridge IELTS 19 (Full Mock Exams)",
+                days: [
+                    {
+                        day: 22,
+                        title: "Day 22: Full Mock Exam #1 (Cambridge 19 Test 1)",
+                        focus: "2h 45m Uninterrupted Sit-Down Exam",
+                        tasks: [
+                            { id: "w4d22t1", module: "Mock Exam", text: "Take Cambridge 19 - Test 1 Full Mock (Listening 30m + Reading 60m + Writing 60m) in one sitting." },
+                            { id: "w4d22t2", module: "Analysis", text: "Score Listening & Reading, and run both Writing tasks through ChatGPT for band estimation." },
+                            { id: "w4d22t3", module: "Analysis", text: "Conduct a thorough post-mortem of every single mistake in Test 1." },
+                            { id: "w4d22t4", module: "Speaking", text: "Complete a full 14-minute Speaking mock test (Part 1, Cue Card, Part 3)." }
+                        ]
+                    },
+                    {
+                        day: 23,
+                        title: "Day 23: Targeted Weak-Spot Revision",
+                        focus: "Reviewing T/F/NG, Headings & Essay Cohesion",
+                        tasks: [
+                            { id: "w4d23t1", module: "Analysis", text: "Review high-frequency mistakes from Weeks 1–3 (e.g., Reading True/False/Not Given)." },
+                            { id: "w4d23t2", module: "Reading", text: "Drill 20 True/False/Not Given & Yes/No/Not Given questions from earlier Cambridge books." },
+                            { id: "w4d23t3", module: "Writing", text: "Rewrite your Mock Exam #1 Task 2 essay incorporating all grammar and lexical corrections." },
+                            { id: "w4d23t4", module: "Speaking", text: "Revise 10 Makkar Cue Cards (focus on quick 1-minute note-making)." }
+                        ]
+                    },
+                    {
+                        day: 24,
+                        title: "Day 24: Full Mock Exam #2 (Cambridge 19 Test 2)",
+                        focus: "2h 45m Uninterrupted Sit-Down Exam",
+                        tasks: [
+                            { id: "w4d24t1", module: "Mock Exam", text: "Take Cambridge 19 - Test 2 Full Mock (Listening + Reading + Writing back-to-back)." },
+                            { id: "w4d24t2", module: "Analysis", text: "Grade your test and compare your scores and pacing with Mock Exam #1." },
+                            { id: "w4d24t3", module: "Analysis", text: "Analyze every Reading & Listening mistake and log why you chose the wrong option." },
+                            { id: "w4d24t4", module: "Speaking", text: "Complete a full 14-minute recorded Speaking mock test." }
+                        ]
+                    },
+                    {
+                        day: 25,
+                        title: "Day 25: Full Mock Exam #3 (Cambridge 19 Test 3)",
+                        focus: "2h 45m Uninterrupted Sit-Down Exam",
+                        tasks: [
+                            { id: "w4d25t1", module: "Mock Exam", text: "Take Cambridge 19 - Test 3 Full Mock (2 hours 45 minutes strict exam simulation)." },
+                            { id: "w4d25t2", module: "Analysis", text: "Check Listening & Reading scores and evaluate Writing Task 1 & 2." },
+                            { id: "w4d25t3", module: "Writing", text: "Review your Task 1 Overview statements and Task 2 Topic Sentences." },
+                            { id: "w4d25t4", module: "Speaking", text: "Practice answering tricky abstract Speaking Part 3 questions." }
+                        ]
+                    },
+                    {
+                        day: 26,
+                        title: "Day 26: Full Mock Exam #4 (Cambridge 19 Test 4)",
+                        focus: "Final Full-Length Mock Test",
+                        tasks: [
+                            { id: "w4d26t1", module: "Mock Exam", text: "Take Cambridge 19 - Test 4 Full Mock under strict exam conditions." },
+                            { id: "w4d26t2", module: "Analysis", text: "Perform full Mistake Analysis on Cambridge 19 Test 4." },
+                            { id: "w4d26t3", module: "Analysis", text: "Review your Mistake Analysis Journal from Day 1 to Day 26." },
+                            { id: "w4d26t4", module: "Speaking", text: "Complete 1 final full Speaking Mock Test and review your recording." }
+                        ]
+                    },
+                    {
+                        day: 27,
+                        title: "Day 27: Final Revision of Templates & Notes",
+                        focus: "Light Review & Confidence Building",
+                        tasks: [
+                            { id: "w4d27t1", module: "Writing", text: "Review Writing Task 1 & Task 2 structures, linking words, and essay checklists." },
+                            { id: "w4d27t2", module: "Listening", text: "Review common IELTS Listening spelling words (days, months, double-letter words)." },
+                            { id: "w4d27t3", module: "Speaking", text: "Skim through Makkar Cue Card ideas one last time for quick recall." },
+                            { id: "w4d27t4", module: "Strategy", text: "Review your time-allocation strategy for Reading (15m / 20m / 25m)." }
+                        ]
+                    },
+                    {
+                        day: 28,
+                        title: "Day 28 (Days 28–30): Pre-Exam Readiness & Rest",
+                        focus: "Mindset, Logistics & Light Warm-up",
+                        tasks: [
+                            { id: "w4d28t1", module: "Strategy", text: "Prepare exam-day essentials (Passport/ID, exam confirmation, stationary, water bottle)." },
+                            { id: "w4d28t2", module: "Listening", text: "Listen to a light 10-minute English podcast to keep your ears warmed up." },
+                            { id: "w4d28t3", module: "Analysis", text: "Read through your positive progress and avoid heavy cramming on the final night." },
+                            { id: "w4d28t4", module: "Strategy", text: "Get 7–8 hours of restful sleep so your brain is sharp for the 2h 45m exam!" }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // ==========================================
+        // 2. STATE MANAGEMENT (LOCALSTORAGE)
+        // ==========================================
+        const STORAGE_KEY = "ielts_30day_planner_v1";
+
+        let appState = {
+            activeWeek: 1,
+            completedTasks: {},
+            dayNotes: {},
+            dayScores: {},
+            globalNotesRL: "",
+            globalNotesWS: "",
+            darkMode: false,
+            lastUpdated: new Date().toISOString()
+        };
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    appState = {
+                        ...appState,
+                        ...parsed,
+                        completedTasks: parsed.completedTasks || {},
+                        dayNotes: parsed.dayNotes || {},
+                        dayScores: parsed.dayScores || {}
+                    };
+                } else {
+                    appState.darkMode = false;
+                }
+            } catch (err) {
+                console.error("Failed to load state from localStorage:", err);
+            }
+            applyTheme();
+        }
+
+        function saveState() {
+            try {
+                appState.lastUpdated = new Date().toISOString();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                triggerSaveIndicator();
+            } catch (err) {
+                console.error("Failed to save state:", err);
+            }
+        }
+
+        function triggerSaveIndicator() {
+            const el = document.getElementById("saveIndicator");
+            if (!el) return;
+            el.innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Saved just now`;
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // 3. THEME TOGGLE LOGIC
+        // ==========================================
+        function applyTheme() {
+            const htmlEl = document.documentElement;
+            const iconEl = document.getElementById("themeIcon");
+            if (appState.darkMode) {
+                htmlEl.classList.add("dark");
+                if (iconEl) iconEl.setAttribute("data-lucide", "sun");
+            } else {
+                htmlEl.classList.remove("dark");
+                if (iconEl) iconEl.setAttribute("data-lucide", "moon");
+            }
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            appState.darkMode = !appState.darkMode;
+            applyTheme();
+            saveState();
+        }
+
+        // ==========================================
+        // 4. UI RENDERING & PROGRESS CALCULATIONS
+        // ==========================================
+        function getAllTaskIds() {
+            const ids = [];
+            studyPlanData.forEach(w => {
+                w.days.forEach(d => {
+                    d.tasks.forEach(t => ids.push(t.id));
+                });
+            });
+            return ids;
+        }
+
+        function getWeekProgress(weekNum) {
+            const weekObj = studyPlanData.find(w => w.week === weekNum);
+            if (!weekObj) return { done: 0, total: 0, percent: 0 };
+            let done = 0;
+            let total = 0;
+            weekObj.days.forEach(d => {
+                d.tasks.forEach(t => {
+                    total++;
+                    if (appState.completedTasks[t.id]) done++;
+                });
+            });
+            const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+            return { done, total, percent };
+        }
+
+        function getDayProgress(dayObj) {
+            let done = 0;
+            const total = dayObj.tasks.length;
+            dayObj.tasks.forEach(t => {
+                if (appState.completedTasks[t.id]) done++;
+            });
+            const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+            return { done, total, percent, isComplete: done === total && total > 0 };
+        }
+
+        function updateOverallProgressUI() {
+            const allIds = getAllTaskIds();
+            const totalTasks = allIds.length;
+            const doneTasks = allIds.filter(id => appState.completedTasks[id]).length;
+            const overallPercent = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+            let completedDaysCount = 0;
+            studyPlanData.forEach(w => {
+                w.days.forEach(d => {
+                    if (getDayProgress(d).isComplete) completedDaysCount++;
+                });
+            });
+
+            document.getElementById("overallPercentText").textContent = `${overallPercent}%`;
+            document.getElementById("overallCountText").textContent = `(${doneTasks}/${totalTasks} tasks done)`;
+            document.getElementById("overallProgressBar").style.width = `${overallPercent}%`;
+            document.getElementById("completedDaysBadge").textContent = `${completedDaysCount}/28 Days Done`;
+
+            for (let i = 1; i <= 4; i++) {
+                const wp = getWeekProgress(i);
+                const el = document.getElementById(`w${i}MiniProg`);
+                if (el) el.textContent = `${wp.percent}%`;
+            }
+        }
+
+        function renderWeekTabs() {
+            const container = document.getElementById("weekTabsContainer");
+            container.innerHTML = studyPlanData.map(w => {
+                const wp = getWeekProgress(w.week);
+                const isActive = appState.activeWeek === w.week;
+                return `
+                    <button onclick="selectWeek(${w.week})" class="text-left p-4 rounded-2xl border transition-all ${
+                        isActive
+                            ? "bg-teal-600 text-white border-teal-600 shadow-sm"
+                            : "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-teal-500"
+                    }">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-bold uppercase tracking-wider ${isActive ? "text-teal-100" : "text-teal-600 dark:text-teal-400"}">
+                                Week ${w.week}
+                            </span>
+                            <span class="text-xs font-mono font-bold px-2 py-0.5 rounded-md ${
+                                isActive
+                                    ? "bg-teal-700 text-white"
+                                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                            }">
+                                ${wp.percent}%
+                            </span>
+                        </div>
+                        <p class="font-bold text-sm line-clamp-1">${w.title.replace(`Week ${w.week}: `, "")}</p>
+                        <p class="text-xs mt-0.5 line-clamp-1 ${isActive ? "text-teal-100" : "text-slate-500 dark:text-slate-400"}">${w.book}</p>
+                    </button>
+                `;
+            }).join("");
+        }
+
+        function renderWeekSummaryBanner() {
+            const weekObj = studyPlanData.find(w => w.week === appState.activeWeek);
+            if (!weekObj) return;
+            const wp = getWeekProgress(weekObj.week);
+            const banner = document.getElementById("weekSummaryBanner");
+
+            banner.innerHTML = `
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="space-y-1.5 max-w-3xl">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-md bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-xs font-semibold">
+                                ${weekObj.book}
+                            </span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                                ${wp.done} of ${wp.total} tasks completed
+                            </span>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">${weekObj.title}</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                            <strong class="text-slate-900 dark:text-white">Target:</strong> ${weekObj.target}
+                        </p>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                            <strong class="text-slate-900 dark:text-white">Action Plan:</strong> ${weekObj.actionPlan}
+                        </p>
+                    </div>
+                    <div class="lg:w-56 shrink-0 bg-slate-50 dark:bg-slate-950 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <div class="flex justify-between text-xs font-semibold mb-1.5">
+                            <span class="text-slate-600 dark:text-slate-400">Week ${weekObj.week} Completion</span>
+                            <span class="font-mono text-teal-600 dark:text-teal-400">${wp.percent}%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-teal-600 rounded-full transition-all duration-300" style="width: ${wp.percent}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDaysGrid() {
+            const weekObj = studyPlanData.find(w => w.week === appState.activeWeek);
+            if (!weekObj) return;
+            const container = document.getElementById("daysGridContainer");
+
+            container.innerHTML = weekObj.days.map(dayObj => {
+                const dp = getDayProgress(dayObj);
+                const savedScore = appState.dayScores[dayObj.day] || "";
+                const savedNote = appState.dayNotes[dayObj.day] || "";
+
+                const tasksHtml = dayObj.tasks.map(t => {
+                    const checked = !!appState.completedTasks[t.id];
+                    return `
+                        <label class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition">
+                            <input type="checkbox" ${checked ? "checked" : ""} onchange="toggleTask('${t.id}')" class="checkbox-custom mt-0.5 w-4 h-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 accent-teal-600 shrink-0 cursor-pointer">
+                            <div class="text-xs sm:text-sm leading-relaxed select-none">
+                                <span class="inline-block font-semibold text-[11px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-teal-700 dark:text-teal-300 mr-1.5">
+                                    ${t.module}
+                                </span>
+                                <span class="text-slate-700 dark:text-slate-200">${t.text}</span>
+                            </div>
+                        </label>
+                    `;
+                }).join("");
+
+                return `
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border ${
+                        dp.isComplete
+                            ? "border-teal-500 dark:border-teal-500/80"
+                            : "border-slate-200 dark:border-slate-800"
+                    } p-5 shadow-sm flex flex-col justify-between transition">
+                        <div>
+                            <!-- Day Card Header -->
+                            <div class="flex items-start justify-between gap-2 pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400">
+                                            Day ${dayObj.day}
+                                        </span>
+                                        <span class="text-[11px] text-slate-400">• ${dayObj.focus}</span>
+                                    </div>
+                                    <h4 class="font-bold text-base text-slate-900 dark:text-white mt-0.5">${dayObj.title.replace(`Day ${dayObj.day}: `, "")}</h4>
+                                </div>
+                                <span class="shrink-0 text-xs font-mono font-semibold px-2.5 py-1 rounded-lg ${
+                                    dp.isComplete
+                                        ? "bg-teal-600 text-white"
+                                        : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                                }">
+                                    ${dp.done}/${dp.total}
+                                </span>
+                            </div>
+
+                            <!-- Checklist Items -->
+                            <div class="space-y-1 mb-4">
+                                ${tasksHtml}
+                            </div>
+                        </div>
+
+                        <!-- Daily Score & Quick Mistake Note -->
+                        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 shrink-0">Score / Band:</span>
+                                <input type="text" value="${escapeHtml(savedScore)}" oninput="saveDayScore(${dayObj.day}, this.value)" placeholder="e.g., L: 33/40, R: 31/40" class="w-full text-xs rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-teal-500">
+                            </div>
+                            <div>
+                                <input type="text" value="${escapeHtml(savedNote)}" oninput="saveDayNote(${dayObj.day}, this.value)" placeholder="Key mistake or takeaway today..." class="w-full text-xs rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-teal-500">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function escapeHtml(str) {
+            if (!str) return "";
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        function renderGlobalNotes() {
+            const rl = document.getElementById("globalNotesRL");
+            const ws = document.getElementById("globalNotesWS");
+            if (rl) rl.value = appState.globalNotesRL || "";
+            if (ws) ws.value = appState.globalNotesWS || "";
+        }
+
+        function renderAll() {
+            updateOverallProgressUI();
+            renderWeekTabs();
+            renderWeekSummaryBanner();
+            renderDaysGrid();
+            renderGlobalNotes();
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // 5. USER INTERACTION HANDLERS
+        // ==========================================
+        function selectWeek(weekNum) {
+            appState.activeWeek = weekNum;
+            saveState();
+            renderAll();
+        }
+
+        function toggleTask(taskId) {
+            if (appState.completedTasks[taskId]) {
+                delete appState.completedTasks[taskId];
+            } else {
+                appState.completedTasks[taskId] = true;
+            }
+            saveState();
+            updateOverallProgressUI();
+            renderWeekTabs();
+            renderWeekSummaryBanner();
+            renderDaysGrid();
+            lucide.createIcons();
+        }
+
+        function markCurrentWeekComplete() {
+            const weekObj = studyPlanData.find(w => w.week === appState.activeWeek);
+            if (!weekObj) return;
+            const wp = getWeekProgress(appState.activeWeek);
+            const shouldMarkDone = wp.percent < 100;
+
+            weekObj.days.forEach(d => {
+                d.tasks.forEach(t => {
+                    if (shouldMarkDone) {
+                        appState.completedTasks[t.id] = true;
+                    } else {
+                        delete appState.completedTasks[t.id];
+                    }
+                });
+            });
+
+            saveState();
+            renderAll();
+            showToast(shouldMarkDone ? `All tasks in Week ${appState.activeWeek} marked complete!` : `Week ${appState.activeWeek} tasks cleared.`);
+        }
+
+        function saveDayScore(dayNum, val) {
+            appState.dayScores[dayNum] = val;
+            saveState();
+        }
+
+        function saveDayNote(dayNum, val) {
+            appState.dayNotes[dayNum] = val;
+            saveState();
+        }
+
+        function saveGlobalNotes() {
+            const rl = document.getElementById("globalNotesRL");
+            const ws = document.getElementById("globalNotesWS");
+            appState.globalNotesRL = rl ? rl.value : "";
+            appState.globalNotesWS = ws ? ws.value : "";
+            saveState();
+        }
+
+        function exportProgress() {
+            try {
+                const dataStr = JSON.stringify(appState, null, 2);
+                const blob = new Blob([dataStr], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                const dateStamp = new Date().toISOString().slice(0, 10);
+                a.href = url;
+                a.download = `ielts-study-progress-${dateStamp}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast("Progress exported! Upload this JSON file on any browser to sync.");
+            } catch (err) {
+                showToast("Failed to export progress file.", "error");
+            }
+        }
+
+        function importProgress(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (typeof imported !== "object" || imported === null) {
+                        throw new Error("Invalid JSON structure");
+                    }
+                    appState = {
+                        ...appState,
+                        ...imported,
+                        completedTasks: imported.completedTasks || {},
+                        dayNotes: imported.dayNotes || {},
+                        dayScores: imported.dayScores || {}
+                    };
+                    applyTheme();
+                    saveState();
+                    renderAll();
+                    showToast("Progress synced from backup file!");
+                } catch (err) {
+                    showToast("Invalid backup file. Please upload a valid .json export.", "error");
+                } finally {
+                    event.target.value = "";
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ==========================================
+        // 6. RESET & RESOURCES MODAL LOGIC
+        // ==========================================
+        function openResourcesModal() {
+            const modal = document.getElementById("resourcesModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeResourcesModal() {
+            const modal = document.getElementById("resourcesModal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        function openResetModal() {
+            const modal = document.getElementById("resetModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeResetModal() {
+            const modal = document.getElementById("resetModal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        function confirmResetAll() {
+            const keepDark = appState.darkMode;
+            appState = {
+                activeWeek: 1,
+                completedTasks: {},
+                dayNotes: {},
+                dayScores: {},
+                globalNotesRL: "",
+                globalNotesWS: "",
+                darkMode: keepDark,
+                lastUpdated: new Date().toISOString()
+            };
+            saveState();
+            renderAll();
+            closeResetModal();
+            showToast("All progress has been reset.", "info");
+        }
+
+        // ==========================================
+        // 7. BUILT-IN EXAM PRACTICE TIMER
+        // ==========================================
+        let timerInterval = null;
+        let timerTotalSeconds = 60 * 60;
+        let timerRemainingSeconds = 60 * 60;
+        let isTimerRunning = false;
+
+        function formatSeconds(sec) {
+            const hrs = Math.floor(sec / 3600);
+            const mins = Math.floor((sec % 3600) / 60);
+            const s = sec % 60;
+            if (hrs > 0) {
+                return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+            }
+            return `${String(mins).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        }
+
+        function updateTimerUI() {
+            const disp = document.getElementById("timerDisplay");
+            const btn = document.getElementById("timerStartPauseBtn");
+            const status = document.getElementById("timerStatusText");
+
+            disp.textContent = formatSeconds(timerRemainingSeconds);
+
+            if (isTimerRunning) {
+                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i><span>Pause Timer</span>`;
+                btn.className = "flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm bg-slate-700 hover:bg-slate-800 text-white shadow-sm flex items-center justify-center gap-2 transition";
+                status.textContent = "Timer running — Stay focused!";
+            } else {
+                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i><span>Start Timer</span>`;
+                btn.className = "flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm bg-teal-600 hover:bg-teal-700 text-white shadow-sm flex items-center justify-center gap-2 transition";
+                status.textContent = timerRemainingSeconds === timerTotalSeconds
+                    ? "Ready — Click Start to begin"
+                    : "Paused";
+            }
+            lucide.createIcons();
+        }
+
+        function setTimerPreset(minutes, label) {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            isTimerRunning = false;
+            timerTotalSeconds = minutes * 60;
+            timerRemainingSeconds = timerTotalSeconds;
+            document.getElementById("timerModeLabel").textContent = label;
+            updateTimerUI();
+        }
+
+        function toggleTimer() {
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                isTimerRunning = false;
+                updateTimerUI();
+            } else {
+                if (timerRemainingSeconds <= 0) {
+                    timerRemainingSeconds = timerTotalSeconds;
+                }
+                isTimerRunning = true;
+                updateTimerUI();
+                timerInterval = setInterval(() => {
+                    if (timerRemainingSeconds > 0) {
+                        timerRemainingSeconds--;
+                        document.getElementById("timerDisplay").textContent = formatSeconds(timerRemainingSeconds);
+                    } else {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        isTimerRunning = false;
+                        playBeepSound();
+                        updateTimerUI();
+                        document.getElementById("timerStatusText").textContent = "Time's Up!";
+                        showToast("Time's up! Put your pen down and check your answers.", "info");
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            isTimerRunning = false;
+            timerRemainingSeconds = timerTotalSeconds;
+            updateTimerUI();
+        }
+
+        function playBeepSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            } catch (e) {
+                // Ignore audio error if blocked
+            }
+        }
+
+        // ==========================================
+        // 8. TOAST NOTIFICATION HELPER
+        // ==========================================
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+
+            const bgClass = type === "error"
+                ? "bg-slate-900 text-white border border-slate-700"
+                : "bg-teal-700 text-white";
+
+            toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg text-xs sm:text-sm font-medium transition-all duration-300 ${bgClass}`;
+            toast.innerHTML = `
+                <i data-lucide="${type === 'error' ? 'alert-circle' : 'check-circle'}" class="w-4 h-4 shrink-0"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "translate-y-2");
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Initialize on Window Load
+        window.onload = function () {
+            loadState();
+            renderAll();
+            updateTimerUI();
+        };
+    </script>
+</body>
+</html>
